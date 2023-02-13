@@ -1,0 +1,103 @@
+﻿<Window x:Class="WpfApp伯奥实习.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp伯奥实习"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"   
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Background>
+        <RadialGradientBrush></RadialGradientBrush>
+    </Window.Background>
+
+    <Window.Resources>
+        <ControlTemplate x:Key="defaultButtonTemplate" TargetType="Button">
+            <Border Background="Red" CornerRadius="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                    <TextBlock VerticalAlignment="Center" FontSize="30" Text="风" />
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                </StackPanel>
+            </Border>
+        </ControlTemplate>        
+        <!--fontfamily：字体，fontsize：字号，foreground：字体颜色，HorizontalAlignment：水平位置，VeticalAlignment：垂直位置-->
+        <!--继承重写多态-->
+        <Style x:Key="defaultStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="20"/>
+            <!--trigger触发器-->
+            
+            <Style.Triggers>
+                <!--单个触发条件-->
+                <!--<Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Yellow"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Foreground" Value="Blue"></Setter>
+                </Trigger>-->
+
+                <!--多重触发条件-->
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"></Condition>
+                        <Condition Property="IsFocused" Value="True"></Condition>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="FontSize" Value="70"></Setter>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                
+                <!--事件触发器-->
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.2"
+                                                 Storyboard.TargetProperty="FontSize"
+                                                 To="30">
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    
+        <Style x:Key="wrap" TargetType="Button" BasedOn="{StaticResource defaultStyle}"></Style>
+        
+        
+    </Window.Resources>
+    
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" Grid.Row="0" Background="LightBlue" Orientation="Horizontal" >        <!--StackPanel 垂直或者水平排列容器，Horizontal排列方式控制-->
+            <Button Width="100" Height="40" Margin="50,0,0,0"></Button>
+            <Button Width="100" Height="40"></Button>
+            <Button Width="100" Height="40"/>
+        </StackPanel>
+        <WrapPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">                                    <!--能自动换行的垂直或者水平容器-->
+            <Button Width="100" Height="40"></Button>
+            <Button Width="100" Height="40"></Button>
+            <Button Width="100" Height="40"></Button>
+        </WrapPanel>
+        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False">
+            <!--能够锚定边缘的容器-->
+            <Button Style="{StaticResource wrap}" Width="100" Height="40" DockPanel.Dock="Top" Content="按钮"></Button>
+            <Button Template="{StaticResource defaultButtonTemplate}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Height="40" DockPanel.Dock="Bottom"></Button>
+            <Button Width="100" Height="40" DockPanel.Dock="Left"></Button>
+            <Button Width="100" Height="40" DockPanel.Dock="Right"></Button>
+        </DockPanel>
+        
+        <Canvas></Canvas>
+    </Grid>
+</Window>
